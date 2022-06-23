@@ -4,7 +4,7 @@ class news_table(models.Model):
     title = models.TextField()
     des = models.TextField()
     category = models.TextField()
-    #pub_draft = models.BooleanField()
+    pub_draft = models.BooleanField()
     youtube_link = models.URLField(max_length=300,null=True)
     date = models.DateField(null=False , blank=False)
     time = models.TimeField(null=False , blank=False)
@@ -32,5 +32,5 @@ class ads(models.Model):
     ad_url = models.URLField()
 
 # class tranding(models.Model):
-#     post_id = models.ForeignKey(news_table, on_delete=models.CASCADE)
+#      post_id = models.ForeignKey(news_table, on_delete=models.CASCADE)
 

@@ -118,12 +118,84 @@
             background-color : green;
         }
         .create:hover{
-            background-color : yellow;
+            background-color : gray;
+            color : white;
+            box-shadow : 4px 8px 20px black;
         }
         #navbarDropdown{
         position :relative;
         left : 350%;
         }
+
+        body {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+.column {
+  float: left;
+  width: 33.3%;
+  margin-bottom: 16px;
+  padding: 0 8px;
+}
+
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  margin: 8px;
+}
+
+.about-section {
+  padding: 50px;
+  text-align: center;
+  background-color: #474e5d;
+  color: white;
+}
+
+.container {
+  padding: 0 16px;
+}
+
+.container::after, .row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.title {
+  color: grey;
+}
+
+.button {
+  border: none;
+  outline: 0;
+  display: inline-block;
+  padding: 8px;
+  color: white;
+  background-color: #000;
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+}
+
+.button:hover {
+  background-color: #555;
+}
+
+@media screen and (max-width: 650px) {
+  .column {
+    width: 100%;
+    display: block;
+  }
+}
+
     </style>
 
 
@@ -180,7 +252,9 @@
                     <a href="http://127.0.0.1:8000/" class="nav-item nav-link active">Home</a>
                     <a href="http://127.0.0.1:8000/cat/" class="nav-item nav-link">Categories</a>
                     <a href="http://127.0.0.1:8000/contact/" class="nav-item nav-link">Contact</a>
+                    <a href="http://127.0.0.1:8000/about/" class="nav-item nav-link">About Us</a>
                     <a href="http://127.0.0.1:8000/login/" class="nav-item nav-link">Admin Login</a>
+                    <a href="http://127.0.0.1:8000/draftlogin/" class="nav-item nav-link">Draft</a>
 <!--                    <a href="single.html" class="nav-item nav-link">Single News</a>-->
 <!--                    <div class="nav-item dropdown">-->
 <!--                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Dropdown</a>-->
@@ -211,7 +285,7 @@
             <div class="owl-carousel owl-carousel-2 carousel-item-3 position-relative">
                 {% for ne in news %}
         <!--  it can show only five latest  news -->
-                {% if ne.id < 6%}
+                {% if forloop.counter < 6%}
                 <div class="d-flex">
                     <img src="{{ne.image.url}}" style="width: 80px; height: 80px; object-fit: cover;">
                     <div class="d-flex align-items-center bg-light px-3" style="height: 80px;">
@@ -234,7 +308,7 @@
                     <div class="owl-carousel owl-carousel-2 carousel-item-1 position-relative mb-3 mb-lg-0">
                         {% for ne in news %}
                     <!--  it can show only three latest  news -->
-                            {% if ne.id < 4%}
+                            {% if forloop.counter < 4%}
                         <div class="position-relative overflow-hidden" style="height: 435px;">
                             <img class="img-fluid h-100" src="{{ne.image.url}}" style="object-fit: cover;">
                             <div class="overlay">
@@ -296,7 +370,7 @@
             <div class="owl-carousel owl-carousel-2 carousel-item-4 position-relative">
                 {% for ne in news %}
         <!--  it can show only ten latest  news -->
-                {% if ne.id < 11%}
+                {% if forloop.counter < 11%}
                 <div class="position-relative overflow-hidden" style="height: 300px;">
                     <img class="img-fluid w-100 h-100" src="{{ne.image.url}}" style="object-fit: cover;">
                     <div class="overlay">
@@ -327,7 +401,7 @@
                     </div>
                     <div class="owl-carousel owl-carousel-3 carousel-item-2 position-relative">
                        {% for b in bus %}
-                        {% if b.id < 11%}
+                        {% if forloop.counter < 11%}
                         <div class="position-relative">
                             <img class="img-fluid w-100" src="{{b.image.url}}" style="object-fit: cover;">
                             <div class="overlay position-relative bg-light">
@@ -349,7 +423,7 @@
                     </div>
                     <div class="owl-carousel owl-carousel-3 carousel-item-2 position-relative">
                         {% for t in tech %}
-                        {% if t.id < 11%}
+                        {% if forloop.counter < 11%}
                         <div class="position-relative">
                             <img class="img-fluid w-100" src="{{t.image.url}}" style="object-fit: cover;">
                             <div class="overlay position-relative bg-light">
@@ -380,7 +454,7 @@
                     </div>
                     <div class="owl-carousel owl-carousel-3 carousel-item-2 position-relative">
                         {% for e in enter %}
-                        {% if e.id < 11%}
+                        {% if forloop.counter < 11%}
                         <div class="position-relative">
                             <img class="img-fluid w-100" src="{{e.image.url}}" style="object-fit: cover;">
                             <div class="overlay position-relative bg-light">
@@ -402,7 +476,7 @@
                     </div>
                     <div class="owl-carousel owl-carousel-3 carousel-item-2 position-relative">
                         {% for s in sports %}
-                            {% if s.id < 11 %}
+                            {% if forloop.counter < 11 %}
                         <div class="position-relative">
                             <img class="img-fluid w-100" src="{{s.image.url}}" style="object-fit: cover;">
                             <div class="overlay position-relative bg-light">
@@ -482,7 +556,7 @@
                             </div>
 
                             {%for i in news%}
-                            {% if i.id > 2 %}
+                            {% if forloop.counter > 2 %}
                             <div class="d-flex mb-3">
                                 <img src="{{i.image.url}}" style="width: 100px; height: 100px; object-fit: cover;">
                                 <div class="w-100 d-flex flex-column justify-content-center bg-light px-3" style="height: 100px;">

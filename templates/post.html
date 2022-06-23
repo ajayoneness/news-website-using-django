@@ -10,7 +10,9 @@
           <div class="container">
 
               <select name="category" >
+
                 <option value="{{data.0.category}}">{{data.0.category}}</option>
+
                 {% for c in cat %}
                 <option value="{{c}}">{{c}}</option>
                 {% endfor %}
@@ -29,6 +31,13 @@
 
             <input type="file" value="{{data.0.image}}" placeholder="Image" name="img" accept="image/*">
 <br><br>
+
+               <select name="pd" >
+                   <option>--public/Draft--</option>
+                   <option value="True">Publish</option>
+                   <option value="False">Draft</option>
+            </select><br><br>
+
             <button class="login" type="submit">Publish >> </button>
         </form>
 {{data.0.image}}

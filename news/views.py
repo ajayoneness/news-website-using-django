@@ -6,12 +6,12 @@ from info.models import news_table,comments,ads,news_letter
 
 category=['Technology','Sports','Business','Entertainment']
 def home(request):
-    news = news_table.objects.all().order_by('-time')
+    news = news_table.objects.filter(pub_draft=True).order_by('-time')
     # category
-    tech = news_table.objects.filter(category='Technology').reverse()
-    sports = news_table.objects.filter(category='Sports').reverse()
-    bus = news_table.objects.filter(category='Business').reverse()
-    enter = news_table.objects.filter(category='Entertainment').reverse()
+    tech = news_table.objects.filter(category='Technology',pub_draft=True).reverse()
+    sports = news_table.objects.filter(category='Sports',pub_draft=True).reverse()
+    bus = news_table.objects.filter(category='Business',pub_draft=True).reverse()
+    enter = news_table.objects.filter(category='Entertainment',pub_draft=True).reverse()
     cdt=datetime.datetime.now().strftime("%A, %B %m, %Y")
     ad=ads.objects.all().order_by('-date_from')
 
@@ -32,11 +32,14 @@ def home(request):
     return render (request, "index.html",{"news":news,'cdt':cdt,'ad':ad,'tech':tech,'sports':sports,'bus':bus,'enter':enter})
 
 def cat(request):
-    ctg = news_table.objects.filter(category='Technology').reverse()
+    ctg = news_table.objects.filter(category='Technology',pub_draft=True).reverse()
     return render(request,'category.html',{'ctg': ctg,'allcat':category})
 
 def categ(request,cat):
     ctg = news_table.objects.filter(category=cat).reverse()
+    ad = ads.objects.all()
+    # for i in ad:
+    #     if i.date_from < time
 
     if request.POST:
         eml = request.POST['eml']
@@ -53,7 +56,7 @@ def categ(request,cat):
             nl.save()
 
 
-    return render(request,'category.html',{'ctg':ctg,'allcat':category})
+    return render(request,'category.html',{'ctg':ctg,'allcat':category,'ad':ad})
 
 def contact(request):
     return render(request, 'contact.html')
@@ -86,8 +89,18 @@ def login(request):
 
     return render(request,"login.html")
 
+def draftlogin(request):
+    if request.POST:
+        uname = request.POST['uname']
+        upsw = request.POST['psw']
+        if uname == 'admin' and upsw == 'admin':
+            return redirect('http://127.0.0.1:8000/draft/')
+
+    return render(request,"draftlogin.html")
+
+
 def showall(request):
-    posts=news_table.objects.all()
+    posts=news_table.objects.filter(pub_draft=True)
 
     return render (request,'showall.html',{'posts':posts})
 
@@ -95,7 +108,13 @@ def showall(request):
 def delete(request,obj):
     news_table.objects.filter(id=obj).delete()
 
-    posts = news_table.objects.all()
+    posts = news_table.objects.filter(pub_draft=True)
+    return render (request,'showall.html',{'posts':posts})
+
+def draftdelete(request,obj):
+    news_table.objects.filter(id=obj).delete()
+
+    posts = news_table.objects.filter(pub_draft= False)
     return render (request,'showall.html',{'posts':posts})
 
 def edit(request,id):
@@ -104,6 +123,7 @@ def edit(request,id):
     print(data)
     if request.POST:
         cate = request.POST['category']
+        pd = request.POST['pd']
         title = request.POST['title']
         dec = request.POST['dec']
         youtube = request.POST['ytub']
@@ -117,16 +137,17 @@ def edit(request,id):
             print(image)
         print(image)
 #Update
-        data.title=title
-        data.des=dec
+        data.title = title
+        data.des = dec
         data.category = cate
-        data.Pub_draft = True
+        data.pub_draft = pd
         data.youtube_link = youtube
-        data.date =date
+        data.date = date
         data.time = time
         data.image = image
         data.save()
-        return showall(request)
+        return redirect('http://127.0.0.1:8000/')
+        #return draft(request)
         # blogpost = blog_table(title=title, des=dec, category=cate, pub_draft=True, youtube_link=youtube, date=date,time=time, image=image)
         # blogpost.save()
 
@@ -142,9 +163,16 @@ def createPost(request):
         date = today.strftime("%Y-%m-%d")
         time = today.strftime("%H:%M:%S")
         image = request.FILES['img']
-        blogpost = news_table(title=title,des=dec,category=cate,youtube_link=youtube,date=date,time=time,image=image)
+        pd = request.POST['pd']
+        blogpost = news_table(title=title,des=dec,category=cate,pub_draft = pd,youtube_link=youtube,date=date,time=time,image=image)
         blogpost.save()
         return redirect('http://127.0.0.1:8000/')
 
     return render(request, "post.html",{'cat':category})
 
+def draft(request):
+    posts = news_table.objects.filter(pub_draft=False)
+    return render(request, 'draft.html', {'posts': posts})
+
+def about(request):
+    return render (request,'about.html')
