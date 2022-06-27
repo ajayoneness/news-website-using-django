@@ -230,6 +230,7 @@ html {
                 </a>
             </div>
             <div class="col-lg-8 text-center text-lg-right">
+
                 <a href="{{ad.0.ad_url}}"> <img class="img-fluid" src="{{ad.0.ad_image.url}}" alt="ad image"></a>
 
             </div>
@@ -253,8 +254,7 @@ html {
                     <a href="http://127.0.0.1:8000/cat/" class="nav-item nav-link">Categories</a>
                     <a href="http://127.0.0.1:8000/contact/" class="nav-item nav-link">Contact</a>
                     <a href="http://127.0.0.1:8000/about/" class="nav-item nav-link">About Us</a>
-                    <a href="http://127.0.0.1:8000/login/" class="nav-item nav-link">Admin Login</a>
-                    <a href="http://127.0.0.1:8000/draftlogin/" class="nav-item nav-link">Draft</a>
+
 <!--                    <a href="single.html" class="nav-item nav-link">Single News</a>-->
 <!--                    <div class="nav-item dropdown">-->
 <!--                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Dropdown</a>-->
@@ -656,7 +656,7 @@ html {
                                 <small class="fab fa-linkedin-in mr-2"></small><small>12,345 Connects</small>
                             </a>
                             <a href="" class="d-block w-50 py-2 px-3 text-white text-decoration-none ml-2" style="background: #C8359D;">
-                                <small class="fab fa-instagram mr-2"></small><small>12,345 Followers</small>
+                                <small class="fab fa-instagram mr-2"></small><small>{{insta}} Followers</small>
                             </a>
                         </div>
                         <div class="d-flex mb-3">
@@ -844,11 +844,13 @@ html {
             <div class="col-lg-3 col-md-6 mb-5">
                 <h4 class="font-weight-bold mb-4">Quick Links</h4>
                 <div class="d-flex flex-column justify-content-start">
-                    <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right text-dark mr-2"></i>About</a>
+<!--                    <a href="http://127.0.0.1:8000/login/" class="text-secondary mb-2"><i class="fa fa-angle-right text-dark mr-2"></i>Admin Login</a>-->
+<!--                    <a href="http://127.0.0.1:8000/draftlogin/" class="text-secondary mb-2"><i class="fa fa-angle-right text-dark mr-2"></i>Draft</a>-->
+                    <a class="text-secondary mb-2" href="http://127.0.0.1:8000/about/"><i class="fa fa-angle-right text-dark mr-2"></i>About</a>
                     <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right text-dark mr-2"></i>Advertise</a>
                     <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right text-dark mr-2"></i>Privacy & policy</a>
                     <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right text-dark mr-2"></i>Terms & conditions</a>
-                    <a class="text-secondary" href="#"><i class="fa fa-angle-right text-dark mr-2"></i>Contact</a>
+                    <a class="text-secondary" href="http://127.0.0.1:8000/contact/"><i class="fa fa-angle-right text-dark mr-2"></i>Contact</a>
                 </div>
             </div>
         </div>

@@ -1,4 +1,4 @@
-{% extends 'index.html' %}
+{% extends 'showall.html' %}
 
 {% block content %}
     <form class="form" method="post" enctype="multipart/form-data">
@@ -22,8 +22,8 @@
 
             <input type="text" placeholder="Title" value="{{data.0.title}}" name="title" required>
 
-
-            <input type="text" placeholder="Decriptions" value="{{data.0.des}}" name="dec" aria-multiline="true" height="100px" required>
+            <textarea id="message" placeholder="Decriptions" name="dec" cols="30" rows="5" value="{{data.0.des}}" class="form-control">{{data.0.des}}</textarea>
+<!--            <input type="text" placeholder="Decriptions" value="{{data.0.des}}" name="dec" aria-multiline="true" height="100px" required>-->
 <br><br>
 
             <input type="url" value="{{data.0.youtube_link}}" placeholder="Youtube Link" name="ytub" >
@@ -33,12 +33,12 @@
 <br><br>
 
                <select name="pd" >
-                   <option>--public/Draft--</option>
+                   <option value="">--public/Draft--</option>
                    <option value="True">Publish</option>
                    <option value="False">Draft</option>
             </select><br><br>
 
-            <button class="login" type="submit">Publish >> </button>
+            <button class="login" type="submit">POST >> </button>
         </form>
 {{data.0.image}}
 

@@ -34,3 +34,7 @@ class ads(models.Model):
 # class tranding(models.Model):
 #      post_id = models.ForeignKey(news_table, on_delete=models.CASCADE)
 
+class addcategory(models.Model):
+    category_name = models.TextField(max_length=100)
+    cat_dec = models.TextField()
+

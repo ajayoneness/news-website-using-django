@@ -1,10 +1,11 @@
 import datetime
-
 from django.shortcuts import render,HttpResponse,redirect
-from info.models import news_table,comments,ads,news_letter
+from info.models import news_table,comments,ads,news_letter,addcategory
+from time import sleep
 
-
-category=['Technology','Sports','Business','Entertainment']
+sleep(1)
+obj = addcategory.objects.all()
+category = [i.category_name for i in obj]
 def home(request):
     news = news_table.objects.filter(pub_draft=True).order_by('-time')
     # category
@@ -15,10 +16,21 @@ def home(request):
     cdt=datetime.datetime.now().strftime("%A, %B %m, %Y")
     ad=ads.objects.all().order_by('-date_from')
 
+    # instagram post
+    # import json
+    # import re
+    # import requests
+    # PROFILE = 'code_ajay'
+    # response = requests.get('https://www.instagram.com/' + PROFILE)
+    # json_match = re.search(r'window\._sharedData = (.*);</script>', response.text)
+    # profile_json = json.loads(json_match.group(1))['entry_data']['ProfilePage'][0]['graphql']['user']
+    # instafol= profile_json['edge_followed_by']['count']
+
+
+
     if request.POST:
         eml = request.POST['eml']
         emlverfy = news_letter.objects.filter(email=str(eml))
-        print(emlverfy)
         try:
             if eml != emlverfy[0].email:
                 nl=news_letter(date_time=datetime.datetime.now(),email=eml)
@@ -28,6 +40,7 @@ def home(request):
         except:
             nl = news_letter(date_time=datetime.datetime.now(), email=eml)
             nl.save()
+
 
     return render (request, "index.html",{"news":news,'cdt':cdt,'ad':ad,'tech':tech,'sports':sports,'bus':bus,'enter':enter})
 
@@ -89,14 +102,14 @@ def login(request):
 
     return render(request,"login.html")
 
-def draftlogin(request):
-    if request.POST:
-        uname = request.POST['uname']
-        upsw = request.POST['psw']
-        if uname == 'admin' and upsw == 'admin':
-            return redirect('http://127.0.0.1:8000/draft/')
-
-    return render(request,"draftlogin.html")
+# def draftlogin(request):
+#     if request.POST:
+#         uname = request.POST['uname']
+#         upsw = request.POST['psw']
+#         if uname == 'admin' and upsw == 'admin':
+#             return redirect('http://127.0.0.1:8000/draft/')
+#
+#     return render(request,"draftlogin.html")
 
 
 def showall(request):
@@ -123,7 +136,13 @@ def edit(request,id):
     print(data)
     if request.POST:
         cate = request.POST['category']
-        pd = request.POST['pd']
+        if request.POST['pd'] == '':
+            pd=fil[0].pub_draft
+        else:
+            pd=request.POST['pd']
+
+        print(" akjsiodoiasj : ",pd)
+
         title = request.POST['title']
         dec = request.POST['dec']
         youtube = request.POST['ytub']
@@ -140,13 +159,13 @@ def edit(request,id):
         data.title = title
         data.des = dec
         data.category = cate
-        data.pub_draft = pd
+        data.pub_draft =pd
         data.youtube_link = youtube
         data.date = date
         data.time = time
         data.image = image
         data.save()
-        return redirect('http://127.0.0.1:8000/')
+        return redirect('http://127.0.0.1:8000/showall')
         #return draft(request)
         # blogpost = blog_table(title=title, des=dec, category=cate, pub_draft=True, youtube_link=youtube, date=date,time=time, image=image)
         # blogpost.save()
@@ -162,7 +181,10 @@ def createPost(request):
         today = datetime.datetime.now()
         date = today.strftime("%Y-%m-%d")
         time = today.strftime("%H:%M:%S")
-        image = request.FILES['img']
+        try:
+            image = request.FILES['img']
+        except:
+            image = None
         pd = request.POST['pd']
         blogpost = news_table(title=title,des=dec,category=cate,pub_draft = pd,youtube_link=youtube,date=date,time=time,image=image)
         blogpost.save()
@@ -176,3 +198,26 @@ def draft(request):
 
 def about(request):
     return render (request,'about.html')
+
+
+def addcat(request):
+    if request.POST:
+        cat = request.POST['cat']
+        des = request.POST['des']
+        catverfy = addcategory.objects.filter(category_name=str(cat))
+        try:
+            if cat != catverfy[0].category_name:
+                obj = addcategory(category_name=cat, cat_dec=des)
+                obj.save()
+                category.append(cat)
+            else:
+                return render(request,'addcat.html',{'category':category})
+        except:
+            obj = addcategory(category_name=cat, cat_dec=des)
+            obj.save()
+            category.append(cat)
+
+    return render(request,'addcat.html',{'category':category})
+
+
+
